@@ -19,4 +19,30 @@ describe Parser do
       end
     end
   end
+
+  describe "#count_lines" do
+    subject { described_class.new("./spec/fixtures/games_test.log") }
+
+    it "returns the number of lines in the file" do
+      expect(subject.count_lines).to eq(158)
+    end
+
+    #verificar com os avaliadores/reviwers qual modo usar para testar o count_lines (de cima ou de baixo)
+
+    it { expect(subject.count_lines).to eq(158)}
+  end
+
+  describe "#count_lines_json" do
+    subject { described_class.new("./spec/fixtures/games_test.log") }
+
+    let(:obj) { { "games_test.log" => {
+      "lines" => 158
+    } } }
+    
+    specify { expect(JSON.parse(subject.count_lines_json)).to eq(obj) }
+    
+    #verificar com os avaliadores/reviewers qual modo usar para testar o count_lines_json (de cima ou de baixo)
+    
+    it { expect(subject.count_lines_json).to eq(JSON.pretty_generate(obj)) }
+  end
 end
