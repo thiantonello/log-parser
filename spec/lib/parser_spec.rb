@@ -27,7 +27,13 @@ describe Parser do
 
     let(:obj) do      
       { "games_test.log" => { 
-        "lines" => 158
+        "lines" => 158,
+        "players" => [
+          "Isgalamido",
+          "Dono da Bola",
+          "Mocinha",
+          "Zeh",
+        ]
         }
       }
     end
