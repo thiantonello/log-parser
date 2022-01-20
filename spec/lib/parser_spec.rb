@@ -22,8 +22,8 @@ describe Parser do
     end
   end  
 
-  describe "#count_lines_json" do
-    subject { described_class.new(path).count_lines_json }
+  describe "#generate_json" do
+    subject { described_class.new(path).generate_json }
 
     let(:obj) do      
       { "games_test.log" => { 

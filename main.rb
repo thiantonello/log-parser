@@ -7,4 +7,4 @@ print parser.first_line
 
 puts
 
-puts parser.count_lines_json
+puts parser.generate_json
