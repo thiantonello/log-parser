@@ -13,18 +13,18 @@ class Parser
   end
   
   def generate_json
-    file = @path.split("/").last
+  file = @path.split("/").last
+  
+  obj = { file => {
+    :lines => count_lines()
+    } }
     
-    obj = { file => {
-      :lines => count_lines()
-      } }
-      
-    JSON.pretty_generate(obj)
-    end
+  JSON.pretty_generate(obj)
+  end
 
-    private
+  private
 
-    def count_lines
-      data = File.readlines(@path).count
-    end
+  def count_lines
+    data = File.readlines(@path).count
+  end
 end
