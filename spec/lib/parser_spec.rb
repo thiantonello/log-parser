@@ -1,10 +1,12 @@
 require './lib/parser'
 require './spec/spec_helper'
 
-describe Parser do  
+describe Parser do
+  let(:path) { "./spec/fixtures/games_test.log" }
+
   describe "#first_line" do
     context "when the file exist" do
-      subject { described_class.new("./spec/fixtures/games_test.log") }
+      subject { described_class.new(path) }
       
       it "return the first line of the file" do
         expect(subject.first_line).to eq("  0:00 ------------------------------------------------------------\n")
@@ -18,5 +20,18 @@ describe Parser do
         expect { subject.first_line }.to raise_error(Errno::ENOENT)
       end
     end
+  end  
+
+  describe "#generate_json" do
+    subject { described_class.new(path).generate_json }
+
+    let(:obj) do      
+      { "games_test.log" => { 
+        "lines" => 158
+        }
+      }
+    end
+        
+    it { is_expected.to eq(JSON.pretty_generate(obj)) }
   end
 end
