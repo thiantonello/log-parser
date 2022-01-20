@@ -6,7 +6,7 @@ class Parser
         word: "killed",
         init: "killed ",
         end: " by"
-    }, 
+    },
     {
         word: "ClientUserinfoChanged: ",
         init: " n\\",
@@ -24,15 +24,15 @@ class Parser
     data.close
     content
   end
-  
+
   def generate_json
   file = @path.split("/").last
-  
+
   obj = { file => {
     :lines => count_lines(),
     :players => count_players()
     }}
-    
+
   JSON.pretty_generate(obj)
   end
 
@@ -40,7 +40,7 @@ class Parser
 
   def count_lines
     data = File.readlines(@path).count
-  end  
+  end
 
   def count_players
     players = []
@@ -63,7 +63,7 @@ class Parser
 
   def player_include(temp, players)
     unless temp.nil?
-      unless players.include?(temp) 
+      unless players.include?(temp)
         players << temp
       end
     end
