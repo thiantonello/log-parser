@@ -26,14 +26,15 @@ describe Parser do
     subject { described_class.new(path).generate_json }
 
     let(:obj) do
-      { "games_test.log" => {
-        "lines" => 158,
-        "players" => [
-          "Isgalamido",
-          "Dono da Bola",
-          "Mocinha",
-          "Zeh"
-        ]
+      {
+        "games_test.log": {
+          "lines": 158,
+          "players": [
+            "Isgalamido",
+            "Dono da Bola",
+            "Mocinha",
+            "Zeh"
+          ]
         }
       }
     end

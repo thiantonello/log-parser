@@ -3,16 +3,16 @@ require 'json'
 class Parser
   PATTERNS = [
     {
-        word: "killed",
-        init: "killed ",
-        end: " by"
+      word: "killed",
+      init: "killed ",
+      end: " by"
     },
     {
-        word: "ClientUserinfoChanged: ",
-        init: " n\\",
-        end: "\\t"
+      word: "ClientUserinfoChanged: ",
+      init: " n\\",
+      end: "\\t"
     }
-]
+  ].freeze
 
   def initialize(path)
     @path = path
@@ -26,46 +26,45 @@ class Parser
   end
 
   def generate_json
-  file = @path.split("/").last
+    file = @path.split("/").last
 
-  obj = { file => {
-    :lines => count_lines(),
-    :players => count_players()
-    }}
+    obj = {
+      file => {
+        lines: count_lines(),
+        players: count_players()
+      }
+    }
 
-  JSON.pretty_generate(obj)
+    JSON.pretty_generate(obj)
   end
 
   private
 
   def count_lines
-    data = File.readlines(@path).count
+    File.readlines(@path).count
   end
 
   def count_players
     players = []
+
     File.readlines(@path).each do |line|
       PATTERNS.each do |pattern|
-        temp = line_scanner(line, pattern[:word], pattern[:init], pattern[:end])
+        player_name = line_scanner(line, pattern)
 
-        player_include(temp, players)
+        player_include(player_name, players)
       end
     end
 
     players
   end
 
-  def line_scanner(line, word, search_init, search_end)
-    if line.include?(word)
-      line.split(search_init).last.split(search_end).first
-    end
+  def line_scanner(line, pattern)
+    return unless line.include?(pattern[:word])
+    line.split(pattern[:init]).last.split(pattern[:end]).first
   end
 
-  def player_include(temp, players)
-    unless temp.nil?
-      unless players.include?(temp)
-        players << temp
-      end
-    end
+  def player_include(player_name, players)
+    return unless player_name
+    return players << player_name unless players.include?(player_name)
   end
 end
