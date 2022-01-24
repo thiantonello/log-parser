@@ -1,6 +1,8 @@
-require "./lib/parser"
-require "json"
+# frozen_string_literal: true
 
-parser = Parser.new("./fixtures/games.log")
+require './lib/parser'
+require 'json'
+
+parser = Parser.new('./data/games.log')
 
 puts parser.generate_json

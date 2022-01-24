@@ -1,16 +1,19 @@
+# frozen_string_literal: true
+
 require 'json'
 
+# Parse the code, extract information and generate JSON
 class Parser
   PATTERNS = [
     {
-      word: "killed",
-      init: "killed ",
-      end: " by"
+      word: 'killed',
+      init: 'killed ',
+      end: ' by'
     },
     {
-      word: "ClientUserinfoChanged: ",
-      init: " n\\",
-      end: "\\t"
+      word: 'ClientUserinfoChanged: ',
+      init: ' n\\',
+      end: '\\t'
     }
   ].freeze
 
@@ -26,12 +29,12 @@ class Parser
   end
 
   def generate_json
-    file = @path.split("/").last
+    file = @path.split('/').last
 
     obj = {
       file => {
-        lines: count_lines(),
-        players: count_players()
+        lines: count_lines,
+        players: count_players
       }
     }
 
@@ -60,6 +63,7 @@ class Parser
 
   def line_scanner(line, pattern)
     return unless line.include?(pattern[:word])
+
     line.split(pattern[:init]).last.split(pattern[:end]).first
   end
 

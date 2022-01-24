@@ -1,28 +1,30 @@
+# frozen_string_literal: true
+
 require './lib/parser'
 require './spec/spec_helper'
 
 describe Parser do
-  let(:path) { "./spec/fixtures/games_test.log" }
+  let(:path) { './spec/fixtures/games_test.log' }
 
-  describe "#first_line" do
-    context "when the file exist" do
+  describe '#first_line' do
+    context 'when the file exist' do
       subject { described_class.new(path) }
 
-      it "return the first line of the file" do
+      it 'return the first line of the file' do
         expect(subject.first_line).to eq("  0:00 ------------------------------------------------------------\n")
       end
     end
 
-    context "when the file does not exist" do
-      subject { described_class.new("./spec/fixtures/some_random_file.log") }
+    context 'when the file does not exist' do
+      subject { described_class.new('./spec/fixtures/some_random_file.log') }
 
-      it "returns an error" do
+      it 'returns an error' do
         expect { subject.first_line }.to raise_error(Errno::ENOENT)
       end
     end
   end
 
-  describe "#generate_json" do
+  describe '#generate_json' do
     subject { described_class.new(path).generate_json }
 
     let(:obj) do
@@ -30,10 +32,10 @@ describe Parser do
         "games_test.log": {
           "lines": 158,
           "players": [
-            "Isgalamido",
-            "Dono da Bola",
-            "Mocinha",
-            "Zeh"
+            'Isgalamido',
+            'Dono da Bola',
+            'Mocinha',
+            'Zeh'
           ]
         }
       }
