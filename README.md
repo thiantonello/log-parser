@@ -44,6 +44,12 @@
 
 ## How to Use the Project
 
+- put your file inside data
+
+  - add file path to main.rb:4 inside parser = Parser.new('./data/<file_name>')
+
+  e.g. parser = Parser.new('./data/<file_name>')
+
 - run the program
 
         $ ruby main.rb
@@ -54,13 +60,13 @@
 
         $ require "./lib/parser"
 
-        $ parser = Parser.new("./fixtures/games.log")
+        $ parser = Parser.new('./data/<file_name>')
 
         $ parser.first_line
 
 - run all tests
 
-        $ bundle exec rspec
+        $ rspec
 
 - run an specific test:
 

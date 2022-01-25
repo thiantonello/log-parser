@@ -1,7 +1,16 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-# gem "rails"
-gem "rspec", "~> 3.10"
-gem "json", "~> 2.6.1"
+ruby '3.1.0'
+
+gem 'json', '~> 2.6.1'
+
+group :development, :test do
+  gem 'rspec', '~> 3.1.0'
+  gem 'rubocop', require: false
+end
+
+group :test do
+  gem 'simplecov', require: false
+end
