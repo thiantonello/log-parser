@@ -20,6 +20,7 @@ class Parser
   def initialize(path)
     raise 'File not found' unless File.exist?(path)
 
+    @players = []
     @path = path
   end
 
@@ -32,11 +33,12 @@ class Parser
 
   def generate_json
     file = @path.split('/').last
+    list_players
 
     obj = {
       file => {
         lines: count_lines,
-        players: count_players
+        players: @players
       }
     }
 
@@ -49,28 +51,23 @@ class Parser
     File.readlines(@path).count
   end
 
-  def count_players
-    players = []
-
+  def list_players
     File.readlines(@path).each do |line|
       PATTERNS.each do |pattern|
-        player_name = line_scanner(line, pattern)
-
-        player_include(player_name, players)
+        include_player(find_player(line, pattern))
       end
     end
-
-    players
   end
 
-  def line_scanner(line, pattern)
+  def find_player(line, pattern)
     return unless line.include?(pattern[:word])
 
     line.split(pattern[:init]).last.split(pattern[:end]).first
   end
 
-  def player_include(player_name, players)
+  def include_player(player_name)
     return unless player_name
-    return players << player_name unless players.include?(player_name)
+
+    @players << player_name unless @players.include?(player_name)
   end
 end
