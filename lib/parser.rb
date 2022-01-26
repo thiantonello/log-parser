@@ -4,24 +4,28 @@ require 'json'
 
 # Parse the code, extract information and generate JSON
 class Parser
-  PATTERNS = [
-    {
-      word: 'killed',
-      init: 'killed ',
-      end: ' by'
-    },
-    {
-      word: 'ClientUserinfoChanged: ',
-      init: ' n\\',
-      end: '\\t'
-    }
-  ].freeze
+  PARSE_PATTERNS = {
+    user_info_changed:
+      {
+        word: 'ClientUserinfoChanged: ',
+        init: ' n\\',
+        end: '\\t'
+      },
+    kill:
+      {
+        word: 'killed',
+        init: ': ',
+        end: ' killed '
+      }
+  }.freeze
 
   def initialize(path)
     raise 'File not found' unless File.exist?(path)
 
-    @players = []
     @path = path
+    @players = []
+    @total_kills = 0
+    @kill_score = {}
   end
 
   def first_line
@@ -31,43 +35,63 @@ class Parser
     content
   end
 
-  def generate_json
-    file = @path.split('/').last
-    list_players
-
-    obj = {
-      file => {
-        lines: count_lines,
-        players: @players
-      }
-    }
-
-    JSON.pretty_generate(obj)
+  def output_json
+    JSON.pretty_generate(generate_json)
   end
 
   private
 
-  def count_lines
+  def generate_json
+    file_name = @path.split('/').last
+    process_games_info
+
+    {
+      file_name => {
+        lines: count_file_lines,
+        players: @players,
+        kills: @kill_score,
+        total_kills: @total_kills
+      }
+    }
+  end
+
+  def count_file_lines
     File.readlines(@path).count
   end
 
-  def list_players
+  def process_games_info
     File.readlines(@path).each do |line|
-      PATTERNS.each do |pattern|
-        include_player(find_player(line, pattern))
-      end
+      @total_kills += 1 if line.include?('killed')
+
+      register_players(
+        find_player_name(line, PARSE_PATTERNS[:user_info_changed])
+      )
+
+      check_kill_records(
+        find_player_name(line, PARSE_PATTERNS[:kill])
+      )
     end
   end
 
-  def find_player(line, pattern)
+  def find_player_name(line, pattern)
     return unless line.include?(pattern[:word])
 
     line.split(pattern[:init]).last.split(pattern[:end]).first
   end
 
-  def include_player(player_name)
+  def register_players(player_name)
     return unless player_name
 
-    @players << player_name unless @players.include?(player_name)
+    return if @players.include?(player_name)
+
+    @players.push(player_name)
+    @kill_score.store(player_name, 0)
+  end
+
+  def check_kill_records(player_name)
+    return unless player_name
+    return if player_name == '<world>'
+
+    @kill_score[player_name] += 1
   end
 end

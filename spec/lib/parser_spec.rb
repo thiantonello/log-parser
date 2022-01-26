@@ -24,10 +24,10 @@ describe Parser do
     end
   end
 
-  describe '#generate_json' do
-    subject { described_class.new(path).generate_json }
+  describe '#output_json' do
+    subject { described_class.new(path).output_json }
 
-    let(:obj) do
+    let(:hash) do
       {
         "games_test.log": {
           "lines": 158,
@@ -36,11 +36,18 @@ describe Parser do
             'Dono da Bola',
             'Mocinha',
             'Zeh'
-          ]
+          ],
+          "kills": {
+            "Isgalamido": 4,
+            "Dono da Bola": 0,
+            "Mocinha": 0,
+            "Zeh": 0
+          },
+          "total_kills": 15
         }
       }
     end
 
-    it { is_expected.to eq(JSON.pretty_generate(obj)) }
+    it { is_expected.to eq(JSON.pretty_generate(hash)) }
   end
 end
