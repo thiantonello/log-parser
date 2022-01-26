@@ -18,6 +18,8 @@ class Parser
   ].freeze
 
   def initialize(path)
+    raise 'File not found' unless File.exist?(path)
+
     @path = path
   end
 

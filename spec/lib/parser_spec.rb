@@ -6,21 +6,21 @@ require './spec/spec_helper'
 describe Parser do
   let(:path) { './spec/fixtures/games_test.log' }
 
-  describe '#first_line' do
-    context 'when the file exist' do
-      subject { described_class.new(path) }
-
-      it 'return the first line of the file' do
-        expect(subject.first_line).to eq("  0:00 ------------------------------------------------------------\n")
-      end
-    end
-
+  describe '#initialize' do
     context 'when the file does not exist' do
       subject { described_class.new('./spec/fixtures/some_random_file.log') }
 
       it 'returns an error' do
-        expect { subject.first_line }.to raise_error(Errno::ENOENT)
+        expect { subject.first_line }.to raise_error('File not found')
       end
+    end
+  end
+
+  describe '#first_line' do
+    subject { described_class.new(path) }
+
+    it 'returns the first line of the file' do
+      expect(subject.first_line).to eq("  0:00 ------------------------------------------------------------\n")
     end
   end
 
