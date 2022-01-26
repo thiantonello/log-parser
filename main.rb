@@ -5,4 +5,4 @@ require 'json'
 
 parser = Parser.new('./data/games.log')
 
-puts parser.generate_json
+puts parser.output_json
