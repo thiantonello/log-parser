@@ -16,6 +16,12 @@ class Parser
         word: 'killed',
         init: ': ',
         end: ' killed '
+      },
+    world:
+      {
+        word: '<world>',
+        init: ' killed ',
+        end: ' by '
       }
   }.freeze
 
@@ -70,6 +76,10 @@ class Parser
       check_kill_records(
         find_player_name(line, PARSE_PATTERNS[:kill])
       )
+
+      check_world_kill(
+        find_player_name(line, PARSE_PATTERNS[:world])
+      )
     end
   end
 
@@ -93,5 +103,11 @@ class Parser
     return if player_name == '<world>'
 
     @kill_score[player_name] += 1
+  end
+
+  def check_world_kill(player_name)
+    return unless player_name
+
+    @kill_score[player_name] -= 1
   end
 end
