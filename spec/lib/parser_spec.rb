@@ -38,10 +38,10 @@ describe Parser do
             'Zeh'
           ],
           "kills": {
-            "Isgalamido": 4,
-            "Dono da Bola": 0,
+            "Isgalamido": -4,
+            "Dono da Bola": -1,
             "Mocinha": 0,
-            "Zeh": 0
+            "Zeh": -2
           },
           "total_kills": 15
         }
